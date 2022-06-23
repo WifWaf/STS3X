@@ -30,38 +30,38 @@
 #define STS3X_PE_MPS_4           0x23
 #define STS3X_PE_MPS_10          0x27
 
-#define STS3X_PE_05_REP_HIGH	 0x32
-#define STS3X_PE_05_REP_MED		 0x24
-#define STS3X_PE_05_REP_LOW		 0x2F
-#define STS3X_PE_1_REP_HIGH		 0x30
-#define STS3X_PE_1_REP_MED		 0x26
-#define STS3X_PE_1_REP_LOW		 0x2D
-#define STS3X_PE_2_REP_HIGH		 0x36
-#define STS3X_PE_2_REP_MED		 0x20
-#define STS3X_PE_2_REP_LOW		 0x2B
-#define STS3X_PE_4_REP_HIGH		 0x34
-#define STS3X_PE_4_REP_MED		 0x22
-#define STS3X_PE_4_REP_LOW		 0x29
-#define STS3X_PE_10_REP_HIGH	 0x37
-#define STS3X_PE_10_REP_MED		 0x21
-#define STS3X_PE_10_REP_LOW		 0x2A
+#define STS3X_PE_05_REP_HIGH     0x32
+#define STS3X_PE_05_REP_MED      0x24
+#define STS3X_PE_05_REP_LOW      0x2F
+#define STS3X_PE_1_REP_HIGH      0x30
+#define STS3X_PE_1_REP_MED       0x26
+#define STS3X_PE_1_REP_LOW       0x2D
+#define STS3X_PE_2_REP_HIGH      0x36
+#define STS3X_PE_2_REP_MED       0x20
+#define STS3X_PE_2_REP_LOW       0x2B
+#define STS3X_PE_4_REP_HIGH      0x34
+#define STS3X_PE_4_REP_MED       0x22
+#define STS3X_PE_4_REP_LOW       0x29
+#define STS3X_PE_10_REP_HIGH     0x37
+#define STS3X_PE_10_REP_MED      0x21
+#define STS3X_PE_10_REP_LOW      0x2A
 
-#define STS3X_CMD_HEATER	     0x30
+#define STS3X_CMD_HEATER         0x30
 #define STS3X_CMD_SOFT_RST_B1    0x30
 #define STS3X_CMD_SOFT_RST_B2    0xA2
 #define STS3X_CMD_STATUS_B1      0xF3
 #define STS3X_CMD_STATUS_B2      0x2D
-#define STS3X_CMD_CLR_REG_B1	 0x30
-#define STS3X_CMD_CLR_REG_B2	 0x41
+#define STS3X_CMD_CLR_REG_B1     0x30
+#define STS3X_CMD_CLR_REG_B2     0x41
 #define STS3X_CMD_PDA_READ_B1    0xE0
 #define STS3X_CMD_PDA_READ_B2    0x00
 #define STS3X_CMD_PDA_STOP_B1    0x30
 #define STS3X_CMD_PDA_STOP_B2    0x93
-#define STS3X_STATUS_CMD_OK		 0x00
+#define STS3X_STATUS_CMD_OK      0x00
 
-#define STS3X_HEATER_ON		     0x6D
-#define STS3X_HEATER_OFF		 0X66
-#define STS3X_STATUS_RST_OK		 0x04
+#define STS3X_HEATER_ON          0x6D
+#define STS3X_HEATER_OFF         0X66
+#define STS3X_STATUS_RST_OK      0x04
 #define STS3X_STATUS_HEAT_ON     0x2000
 
 typedef enum  {
@@ -73,7 +73,7 @@ typedef enum  {
 	STS3X_REPEAT_HIGH = STS3X_SS_CLKSTR_REP_HIGH,
 	STS3X_REPEAT_MED = STS3X_SS_CLKSTR_REP_MED,
 	STS3X_REPEAT_LOW = STS3X_SS_CLKSTR_REP_LOW
-} sts3x_repeat_t;	
+} sts3x_repeat_t;
 
 typedef enum  {
 	STS3X_OK,
@@ -88,7 +88,7 @@ typedef struct  {
 	uint8_t pda_mps;
 	
 	sts3x_mode_t mode;
-	sts3x_repeat_t repeat;	
+	sts3x_repeat_t repeat;
 	
 	void (*read)(uint8_t adr, uint8_t *buff, uint8_t len);
 	void (*write)(uint8_t adr, uint8_t *buff, uint8_t len);

@@ -19,47 +19,45 @@ sts3x_cfg_t sts31_cfg = {
 
 void app_main(void)
 {
-   uint32_t temp;
-   bool heater_state = false;
-   
-   for(uint8_t x = 0;;x++)
-   {      
-        if(x > 10)
+	uint32_t temp;
+	bool heater_state = false;
+
+	for(uint8_t x = 0;;x++)
+	{
+		if(x > 10)
 		{
-			heater_state = !heater_state;           
+			heater_state = !heater_state;
 			STS3X_set_heater(heater_state);             // Turn off or on heater to test the sensor 
 			x = 0;
 		}
 		
 		if(STS3X_get_temp(&temp) == STS3X_OK)            // Function returns an error code. 0 = success. Returns 1 (STS3X_NOT_READY) if new measurement is not ready,
-														 // If CRC8 is turned off in single shot mode, then the error code will only return 0 and can be ignored
-        {                                                // Temperature is passed as a int16_t        
-            int16_t temp_int = temp / (int32_t)1e3;      // Dividing by 1000 gives the integer part
-            int16_t temp_dec = temp % (int32_t)1e3;      // Similarly, the remainder gives the fractional part
-              
-            printf("Temp: %d.%s%d", temp_int, (temp_dec < 100) ? "0" : "", temp_dec);
-        }
+		{                                                // If CRC8 is turned off in single shot mode, then the error code will only return 0 and can be ignored
+			int16_t temp_int = temp / (int32_t)1e3;      // Dividing by 1000 gives the integer part
+			int16_t temp_dec = temp % (int32_t)1e3;      // Similarly, the remainder gives the fractional part
 
-        // STS3X_stop_pe_mode();     // Periodic mode can be stopped by calling this functio. Note, this switches to single shot mode.
-        delay_ms(1000);
-        // STS3X_restart_pe_mode();  // Periodic mode can be restated by calling this function.     
-   }
+			printf("Temp: %d.%s%d", temp_int, (temp_dec < 100) ? "0" : "", temp_dec);
+		}
+		// STS3X_stop_pe_mode();     // Periodic mode can be stopped by calling this functio. Note, this switches to single shot mode.
+		delay_ms(1000);
+		// STS3X_restart_pe_mode();  // Periodic mode can be restated by calling this function.     
+	}
 }
 
 void STS3X_link_read(uint8_t adr, uint8_t *buff, uint8_t len)
 {
 	i2c_m_sync_set_slaveaddr(&I2C_0, adr, I2C_M_SEVEN);
 	io_read(I2C_SHARED, buff, len);
-}  
+}
 
 void STS3X_link_write(uint8_t adr, uint8_t *buff, uint8_t len)
 {
-  	i2c_m_sync_set_slaveaddr(&I2C_0, adr, I2C_M_SEVEN);
+	i2c_m_sync_set_slaveaddr(&I2C_0, adr, I2C_M_SEVEN);
 	io_write(I2C_SHARED, buff, len);
 }
 
 void STS3X_link_delay_ms(int duration)
 {
-    delay_ms(duration);
+	delay_ms(duration);
 }
 

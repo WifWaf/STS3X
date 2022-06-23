@@ -34,7 +34,7 @@ void STS3X_init(sts3x_cfg_t *cfg)
 {
 	_sts3x_cfg = cfg;
 	STS3X_make_measure_cmnd(_sts3x_cfg);
-	
+
 	if(_sts3x_cfg->mode == STS3X_MODE_PE)
 		STS3X_restart_pe_mode();
 }
@@ -42,7 +42,7 @@ void STS3X_init(sts3x_cfg_t *cfg)
 void STS3X_restart_pe_mode()
 {
 	_sts3x_cfg->write(_sts3x_cfg->adr, sts3x_com, 2);
-		
+
 	sts3x_com[0] = STS3X_CMD_PDA_READ_B1;
 	sts3x_com[1] = STS3X_CMD_PDA_READ_B2;
 }
@@ -50,51 +50,51 @@ void STS3X_restart_pe_mode()
 void STS3X_stop_pe_mode()
 {
 	uint8_t data[2] = {STS3X_CMD_PDA_STOP_B1, STS3X_CMD_PDA_STOP_B2};
-	
-	_sts3x_cfg->write(_sts3x_cfg->adr, data, 2);	
+
+	_sts3x_cfg->write(_sts3x_cfg->adr, data, 2);
 }
 
-sts3x_err_t STS3X_set_heater(bool state)  
+sts3x_err_t STS3X_set_heater(bool state)
 {
 	uint8_t data[2] = {STS3X_CMD_HEATER, 0};
 	uint16_t status_reg = 0;
 
-	data[1] = (state) ? STS3X_HEATER_ON : STS3X_HEATER_OFF;		
+	data[1] = (state) ? STS3X_HEATER_ON : STS3X_HEATER_OFF;	
 	_sts3x_cfg->write(_sts3x_cfg->adr, data, 2);
 
 	if(!STS3X_read_status_reg(&status_reg))
 		return STS3X_CRC8_FAIL;
-		
+
 	 return ((status_reg & STS3X_STATUS_HEAT_ON) == state) ? STS3X_OK : STS3X_FAIL;
 }
 
-sts3x_err_t STS3X_soft_reset() 
+sts3x_err_t STS3X_soft_reset()
 {
 	uint8_t data[2] = {STS3X_CMD_SOFT_RST_B1, STS3X_CMD_SOFT_RST_B2};
 	uint16_t status_reg = 0;
-	
+
 	_sts3x_cfg->write(_sts3x_cfg->adr, data, 2);
 
 	if(!STS3X_read_status_reg(&status_reg))
 		return STS3X_CRC8_FAIL;
-	
-    return (status_reg & STS3X_STATUS_RST_OK) ? STS3X_OK : STS3X_FAIL;	
+
+    return (status_reg & STS3X_STATUS_RST_OK) ? STS3X_OK : STS3X_FAIL;
 }
 
 sts3x_err_t STS3X_read_status_reg(uint16_t *status_reg)
 {
-	uint8_t data[3] = {STS3X_CMD_STATUS_B1, STS3X_CMD_STATUS_B2, 0};		
-		
-	_sts3x_cfg->write(_sts3x_cfg->adr, data, 2);	
-	data[0] = 0; data[1] = 0;			
-	_sts3x_cfg->read(_sts3x_cfg->adr, data, 3);	
-			
+	uint8_t data[3] = {STS3X_CMD_STATUS_B1, STS3X_CMD_STATUS_B2, 0};
+
+	_sts3x_cfg->write(_sts3x_cfg->adr, data, 2);
+	data[0] = 0; data[1] = 0;
+	_sts3x_cfg->read(_sts3x_cfg->adr, data, 3);
+
 #if STS3X_CRC8
 	if(!STS3X_crc8_check(data, data[2]))
 		return STS3X_CRC8_FAIL;
 #endif
 
-    *status_reg = ((data[0] << 8) & 0xFF) | data[1];	
+	*status_reg = ((data[0] << 8) & 0xFF) | data[1];
 	return STS3X_OK;
 }
 
@@ -102,47 +102,47 @@ sts3x_err_t STS3X_read_status_reg(uint16_t *status_reg)
 void STS3x_clear_status_reg()
 {
 	uint8_t data[2] = {STS3X_CMD_CLR_REG_B1, STS3X_CMD_CLR_REG_B2};
-	
+
 	_sts3x_cfg->write(_sts3x_cfg->adr, data, 2);
 }
 
 sts3x_err_t STS3X_get_temp(uint32_t *temp)
 {
-	uint8_t data[3] = {0, 0, 0};		
+	uint8_t data[3] = {0, 0, 0};
 
 	if(_sts3x_cfg->mode == STS3X_MODE_SS)
 		_sts3x_cfg->write(_sts3x_cfg->adr, sts3x_com, 2);
 	else
 		_sts3x_cfg->write(_sts3x_cfg->adr, sts3x_com, 2);
-	
+
 	if(!_sts3x_cfg->clk_str)
 		_sts3x_cfg->delay_ms(measure_elapse);
-	
-	_sts3x_cfg->read(_sts3x_cfg->adr, data, 3);	
-	
+
+	_sts3x_cfg->read(_sts3x_cfg->adr, data, 3);
+
 	if(!(data[0] & data[1]) && _sts3x_cfg->mode == STS3X_MODE_PE)            // *Note - assumes no readings will be take at 0C
 		return STS3X_NOT_READY;
-				
-#if STS3X_CRC8	
+
+#if STS3X_CRC8
 	if(!STS3X_crc8_check(data, data[2]))
 		return STS3X_CRC8_FAIL;
-#endif	
+#endif
 
-	/* ---------------------------------------------------------------------------------------
-	 From Data sheet, where S_T is the raw temperature value.
-	 
-	                                T_celsius = -45 + 175*(S_T / (2^16 - 1))
-									
-								   T_fahrenheit = -49 + 315*(S_T / (2^16 - 1))				
-	---------------------------------------------------------------------------------------- */
-	
+     /* ---------------------------------------------------------------------------------------
+        From Data sheet, where S_T is the raw temperature value.
+
+                                     T_celsius = -45 + 175*(S_T / (2^16 - 1))
+
+                                    T_fahrenheit = -49 + 315*(S_T / (2^16 - 1))
+     ---------------------------------------------------------------------------------------- */
+
 #if STS3X_TEMP_AS_F
 	*temp = (int32_t)((((int64_t)((uint16_t)(data[0] << 8) | data[1]) * 315000) / 65535) -49000 );        // values are multiplied by 1e3 for int64_t resolution
 #else                                                                                                     // and the 16 bit data for raw temperature is shifted.
 	*temp = (int32_t)((((int64_t)((uint16_t)(data[0] << 8) | data[1]) * 175000) / 65535) -45000 );   
-#endif																								
+#endif
 
-	return STS3X_OK;																			
+	return STS3X_OK;
 }
 
 void STS3X_make_measure_cmnd(sts3x_cfg_t *cfg)
