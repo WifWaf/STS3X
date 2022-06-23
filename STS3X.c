@@ -110,10 +110,7 @@ sts3x_err_t STS3X_get_temp(uint32_t *temp)
 {
 	uint8_t data[3] = {0, 0, 0};
 
-	if(_sts3x_cfg->mode == STS3X_MODE_SS)
-		_sts3x_cfg->write(_sts3x_cfg->adr, sts3x_com, 2);
-	else
-		_sts3x_cfg->write(_sts3x_cfg->adr, sts3x_com, 2);
+	_sts3x_cfg->write(_sts3x_cfg->adr, sts3x_com, 2);
 
 	if(!_sts3x_cfg->clk_str)
 		_sts3x_cfg->delay_ms(measure_elapse);
