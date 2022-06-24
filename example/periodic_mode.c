@@ -38,9 +38,9 @@ void app_main(void)
 
 			printf("Temp: %d.%s%d", temp_int, (temp_dec < 100) ? "0" : "", temp_dec);
 		}
-		// STS3X_stop_pe_mode();     // Periodic mode can be stopped by calling this functio. Note, this switches to single shot mode.
+		// STS3X_stop_periodic_mode();     // Periodic mode can be stopped by calling this functio. Note, this switches to single shot mode.
 		delay_ms(1000);
-		// STS3X_restart_pe_mode();  // Periodic mode can be restated by calling this function.     
+		// STS3X_restart_periodic_mode();  // Periodic mode can be restated by calling this function.     
 	}
 }
 

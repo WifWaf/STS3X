@@ -58,11 +58,22 @@
 #define STS3X_CMD_PDA_STOP_B1    0x30
 #define STS3X_CMD_PDA_STOP_B2    0x93
 #define STS3X_STATUS_CMD_OK      0x00
+#define STS3X_CMD_ALIM_READ      0xE1
+#define STS3X_CMD_ALIM_WRITE     0x61
+
+#define STS3X_CMD_ALIM_W_HL_SET  0x1D
+#define STS3X_CMD_ALIM_W_HL_CLR  0x16
+#define STS3X_CMD_ALIM_W_LL_SET  0x0B
+#define STS3X_CMD_ALIM_W_LL_CLR  0x00
 
 #define STS3X_HEATER_ON          0x6D
 #define STS3X_HEATER_OFF         0X66
 #define STS3X_STATUS_RST_OK      0x04
 #define STS3X_STATUS_HEAT_ON     0x2000
+#define STS3X_STATUS_CRC_FAIL    0x01
+#define STS3X_STATUS_ALERT_PEN   0x8000
+#define STS3X_STATUS_ALERT_TRA   0x400
+#define STS3X_STATUS_PE_MODE     0x20
 
 typedef enum  {
 	STS3X_MODE_SS,
@@ -73,7 +84,7 @@ typedef enum  {
 	STS3X_REPEAT_HIGH = STS3X_SS_CLKSTR_REP_HIGH,
 	STS3X_REPEAT_MED = STS3X_SS_CLKSTR_REP_MED,
 	STS3X_REPEAT_LOW = STS3X_SS_CLKSTR_REP_LOW
-} sts3x_repeat_t;
+} sts3x_repeat_t;	
 
 typedef enum  {
 	STS3X_OK,
@@ -81,6 +92,13 @@ typedef enum  {
 	STS3X_CRC8_FAIL,
 	STS3X_FAIL
 } sts3x_err_t;
+
+typedef enum  {
+	ALERT_HIGH_SET = STS3X_CMD_ALIM_W_HL_SET,
+	ALERT_HIGH_CLR = STS3X_CMD_ALIM_W_HL_CLR,
+	ALERT_LOW_SET = STS3X_CMD_ALIM_W_LL_SET,
+	ALERT_LOW_CLR = STS3X_CMD_ALIM_W_LL_CLR
+} sts3x_alert_t;
 
 typedef struct  {
 	uint8_t adr;
@@ -96,13 +114,15 @@ typedef struct  {
 } sts3x_cfg_t;
 
 void STS3X_init(sts3x_cfg_t *cfg);
-void STS3X_restart_pe_mode();
-void STS3X_stop_pe_mode();
 void STS3X_clear_status_reg();
 
 sts3x_err_t STS3X_set_heater(bool state); 
 sts3x_err_t STS3X_soft_reset();
 sts3x_err_t STS3X_read_status_reg(uint16_t *status_reg);
-sts3x_err_t STS3X_get_temp(uint32_t *temp);
+sts3x_err_t STS3X_get_temp(int32_t *temp);
+sts3x_err_t STS3X_set_alert_limit(sts3x_alert_t alert_def, int32_t limit);
+sts3x_err_t STS3X_get_alert_limit(sts3x_alert_t alert_def, int32_t *limit);
+sts3x_err_t STS3X_restart_periodic_mode();
+sts3x_err_t STS3X_stop_periodic_mode();
 
 #endif /* STS3X_H_ */
