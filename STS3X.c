@@ -158,7 +158,7 @@ sts3x_err_t STS3X_read_status_reg(uint16_t *status_reg)
 	return STS3X_OK;
 }
 
-void STS3x_clear_status_reg()
+void STS3X_clear_status_reg()
 {
 	uint8_t data[2] = {STS3X_CMD_CLR_REG_B1, STS3X_CMD_CLR_REG_B2};
 	

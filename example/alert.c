@@ -57,6 +57,16 @@ void app_main(void)
 
 		prtinf("HS:%d HC:%d LS:%d LC:%d", limits[0], limits[1], limits[2], limits[3]);
 		delay_ms(1000);
+
+		/* The status register can also be read to see if there are any pending alerts, then cleared once action is taken */
+		uint16_t status_reg = 0;
+		STS3X_read_status_reg(&status_reg);	
+
+		if(status_reg & STS3X_STATUS_ALERT_PEN)
+		{
+			/* do something in response */
+			STS3X_clear_status_reg();   // Clear the flags in the status register
+		}
 	}
 }
 
