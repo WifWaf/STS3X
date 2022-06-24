@@ -51,7 +51,7 @@ sts3x_err_t STS3X_set_alert_limit(sts3x_alert_t alert_def, int32_t limit)
 	uint16_t temp_raw = STS3X_s_t_from_temp(limit);
 	
 	data[2] = ((temp_raw >> 15) & 0x01);          // mask the 9th bit for the MSB
-	data[3] = (temp_raw >> 7 & 0xFF);             // mask the remaining 8 bits for the LSB		
+	data[3] = ((temp_raw >> 7) & 0xFF);             // mask the remaining 8 bits for the LSB		
 	uint8_t buff[2] = {data[2], data[3]};         // copy bytes 3 and 4 to buffer
 	data[4] = STS3X_get_crc8(buff);	              // calculate crc and set as byte 5
 	
