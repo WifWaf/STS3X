@@ -192,11 +192,11 @@ sts3x_err_t STS3X_get_temp(int32_t *temp)
 int32_t STS3X_temp_from_s_t(uint16_t raw_temp)
 {
 	/* ---------------------------------------------------------------------------------------
-						From the data sheet, where S_T is the raw temperature value.
-	 
-									T_celsius = -45 + 175(S_T / (2^16 - 1))
-									
-									T_fahrenheit = -49 + 315(S_T / (2^16 - 1))				
+               From the data sheet, where S_T is the raw temperature value.
+
+                    T_celsius = -45 + 175(S_T / (2^16 - 1))
+
+                   T_fahrenheit = -49 + 315(S_T / (2^16 - 1))		
 	---------------------------------------------------------------------------------------- */
 	
 #if STS3X_TEMP_AS_F
@@ -209,14 +209,17 @@ int32_t STS3X_temp_from_s_t(uint16_t raw_temp)
 uint16_t STS3X_s_t_from_temp(int32_t val)
 {
 	/* ---------------------------------------------------------------------------------------
-					Rearranged from the data sheet, where S_T is the raw temperature value.
-	
-									S_T = (2^16 - 1)((T_celsius + 45) / 175)
-									
-									S_T = (2^16 - 1	)((T_fahrenheit + 49) / 315)		
-	---------------------------------------------------------------------------------------- */
+             Rearranged from the data sheet, where S_T is the raw temperature value.
 
+                        S_T = (2^16 - 1)((T_celsius + 45) / 175)
+
+                        S_T = (2^16 - 1	)((T_fahrenheit + 49) / 315)
+---------------------------------------------------------------------------------------- */
+#if STS3X_TEMP_AS_F
+	return (uint16_t)((((int64_t)val + 49000) * 65535) / 315000);
+#else   
 	 return (uint16_t)((((int64_t)val + 45000) * 65535) / 175000);
+#endif	
 }
 
 void STS3X_make_measure_cmnd(sts3x_cfg_t *cfg)
