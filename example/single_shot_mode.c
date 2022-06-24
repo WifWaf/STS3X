@@ -22,19 +22,21 @@ void app_main(void)
 	uint32_t temp;
 	bool heater_state = false;
 
+	STS3X_init(&sts31_cfg); 
+
 	for(uint8_t x = 0;;x++)
 	{
 		if(x > 10)
 		{
 			heater_state = !heater_state;
-			STS3X_set_heater(heater_state);             // Turn off or on heater to test the sensor 
+			STS3X_set_heater(heater_state);       // Turn off or on heater to test the sensor 
 			x = 0;
 		}
 		
-		if(STS3X_get_temp(&temp) == STS3X_OK)            // Function returns an error code. 0 = success
-		{                                                // If CRC8 is turned off in single shot mode, then the error code will only return 0 and can be ignored
-			int16_t temp_int = temp / (int32_t)1e3;      // Dividing by 1000 gives the integer part
-			int16_t temp_dec = temp % (int32_t)1e3;      // Similarly, the remainder gives the fractional part
+		if(STS3X_get_temp(&temp) == STS3X_OK)    // Function returns an error code. 0 = success
+		{                                        // If CRC8 is turned off in single shot mode, then the error code will only return 0 and can be ignored
+			int16_t temp_int = temp / 1000;      // Dividing by 1000 gives the integer part
+			int16_t temp_dec = temp % 1000;      // Similarly, the remainder gives the fractional part
 
 			printf("Temp: %d.%s%d", temp_int, (temp_dec < 100) ? "0" : "", temp_dec);
 		}
