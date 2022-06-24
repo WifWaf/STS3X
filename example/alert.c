@@ -45,35 +45,18 @@ void app_main(void)
 
 	for(uint8_t x = 0;;x++)
 	{
-	/* This function passes the alert limit into the second argument as the int32_t tempeature value. 
-           Note, the tempeature value is stored on the sensor as a 9 bit value, so resolution is ~0.5C  
-           
-           The first argument uses sts3x_alert_t similarly to the above */
-        
-        STS3X_get_alert_limit(ALERT_HIGH_SET, &limits[0]);
-	STS3X_get_alert_limit(ALERT_HIGH_CLR, &limits[1]);
-	STS3X_get_alert_limit(ALERT_LOW_SET, &limits[2]);
-    	STS3X_get_alert_limit(ALERT_LOW_CLR, &limits[3]);
-
-        prtinf("HS:%d HC:%d LS:%d LC:%d", limits[0], limits[1], limits[2], limits[3]);
-<<<<<<< HEAD
-		delay_ms(1000);
-
-		/* The status register can also be read to see if an alert is pending */
-
-		uint16_t status_reg = 0;
-		STS3X_read_status_reg(&status_reg);
-
-		if(status_reg & STS3X_STATUS_ALERT_PEN) // is an alert pending?
-		{
-			/* do something here in response */
+		/* This function passes the alert limit into the second argument as the int32_t tempeature value. 
+				Note, the tempeature value is stored on the sensor as a 9 bit value, so resolution is ~0.5C  
+				
+				The first argument uses sts3x_alert_t similarly to the above */
 			
-			STS3X_clear_status_reg();  // Clear the status register of the alert flags
-		}
-		
-=======
-	delay_ms(1000);
->>>>>>> 6e7288e254cf8e5003ff3e8690f7ec9d81c9fa0e
+		STS3X_get_alert_limit(ALERT_HIGH_SET, &limits[0]);
+		STS3X_get_alert_limit(ALERT_HIGH_CLR, &limits[1]);
+		STS3X_get_alert_limit(ALERT_LOW_SET, &limits[2]);
+		STS3X_get_alert_limit(ALERT_LOW_CLR, &limits[3]);
+
+		prtinf("HS:%d HC:%d LS:%d LC:%d", limits[0], limits[1], limits[2], limits[3]);
+		delay_ms(1000);
 	}
 }
 
