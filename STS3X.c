@@ -5,7 +5,7 @@
  *  Author: J.Dempsey (https://github.com/WifWaf)
  */ 
 
-#include "src/components/drivers/include/STS3X.h"
+#include "STS3X.h"
 
 #define STS3X_SS_CLKSTR_DIS_REP_BIT 0x06   // Bitwise value to convert from clock stretch enable to disable for repeatability
 #define STS3X_SS_CLKSTR_DIS_BIT     0x08   // Bitwise value to convert from clock stretch enable to disable
