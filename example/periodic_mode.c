@@ -7,9 +7,9 @@ void STS3X_link_write(uint8_t adr, uint8_t *buff, uint8_t len);
 void STS3X_link_delay_ms(int duration);
 
 sts3x_cfg_t sts31_cfg = {
-	.adr = STS3x_ADR_L,	                  // Adr pin is tied low
+	.adr = STS3x_ADR_L,	              // Adr pin is tied low
 	.clk_str = false,                     // clock streching off
-	.mode = STS3x_MODE_PE,                // Single shot mode
+	.mode = STS3x_MODE_PE,                // periodic shot mode
 	.repeat = STS3x_REPEAT_HIGH,          // Repeatability is high 
 	.pda_mps = STS3X_PE_MPS_10,           // *Measurements per second is required for periodic mode
 	.read = STS3X_link_read,              // Linking in functions
@@ -29,14 +29,14 @@ void app_main(void)
 		if(x > 10)
 		{
 			heater_state = !heater_state;
-			STS3X_set_heater(heater_state);      // Turn off or on heater to test the sensor 
+			STS3X_set_heater(heater_state);   // Turn off or on heater to test the sensor 
 			x = 0;
 		}
 		
-		if(STS3X_get_temp(&temp) == STS3X_OK)    // Function returns an error code. 0 = success. Returns 1 (STS3X_NOT_READY) if new measurement is not ready,
+		if(STS3X_get_temp(&temp) == STS3X_OK)     // Function returns an error code. 0 = success. Returns 1 (STS3X_NOT_READY) if new measurement is not ready,
 		{                                     
-			int16_t temp_int = temp / 1000;      // Dividing by 1000 gives the integer part
-			int16_t temp_dec = temp % 1000;      // Similarly, the remainder gives the fractional part
+			int16_t temp_int = temp / 1000;   // Dividing by 1000 gives the integer part
+			int16_t temp_dec = temp % 1000;   // Similarly, the remainder gives the fractional part
 
 			printf("Temp: %d.%s%d", temp_int, (temp_dec < 100) ? "0" : "", temp_dec);
 		}
