@@ -9,7 +9,7 @@ void STS3X_link_delay_ms(int duration);
 sts3x_cfg_t sts31_cfg = {
 	.adr = STS3x_ADR_L,	              // Adr pin is tied low
 	.clk_str = false,                     // clock streching off
-	.mode = STS3x_MODE_PE,                // periodic shot mode
+	.mode = STS3x_MODE_PE,                // periodic mode
 	.repeat = STS3x_REPEAT_HIGH,          // Repeatability is high 
 	.pda_mps = STS3X_PE_MPS_10,           // *Measurements per second is required for periodic mode
 	.read = STS3X_link_read,              // Linking in functions
